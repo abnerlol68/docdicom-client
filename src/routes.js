@@ -1,67 +1,47 @@
 import React from "react";
 
-// Admin Imports
-import MainDashboard from "views/admin/default";
-import NFTMarketplace from "views/admin/marketplace";
-import Profile from "views/admin/profile";
-import DataTables from "views/admin/tables";
-import RTLDefault from "views/rtl/default";
-
-// Auth Imports
-import SignIn from "views/auth/SignIn";
+// Dashboard Imports
+import Home from 'app/views/dashboard/home';
+import CreateUsers from 'app/views/dashboard/create-users';
+import SignupRequests from 'app/views/dashboard/signup-requests';
+import UpDeUsers from 'app/views/dashboard/upde-users';
 
 // Icon Imports
 import {
   MdHome,
-  MdOutlineShoppingCart,
-  MdBarChart,
   MdPerson,
-  MdLock,
+  MdPersonAdd,
+  MdOutlinePersonAddDisabled,
 } from "react-icons/md";
 
 const routes = [
   {
     name: "Main Dashboard",
-    layout: "/admin",
-    path: "default",
+    layout: "/dashboard",
+    path: "home",
     icon: <MdHome className="h-6 w-6" />,
-    component: <MainDashboard />,
+    component: <Home />,
   },
   {
-    name: "NFT Marketplace",
-    layout: "/admin",
-    path: "nft-marketplace",
-    icon: <MdOutlineShoppingCart className="h-6 w-6" />,
-    component: <NFTMarketplace />,
-    secondary: true,
-  },
-  {
-    name: "Data Tables",
-    layout: "/admin",
-    icon: <MdBarChart className="h-6 w-6" />,
-    path: "data-tables",
-    component: <DataTables />,
-  },
-  {
-    name: "Profile",
-    layout: "/admin",
-    path: "profile",
+    name: "Crear Usuarios",
+    layout: "/dashboard",
+    path: "create-users",
     icon: <MdPerson className="h-6 w-6" />,
-    component: <Profile />,
+    component: <CreateUsers />,
   },
   {
-    name: "Sign In",
-    layout: "/auth",
-    path: "sign-in",
-    icon: <MdLock className="h-6 w-6" />,
-    component: <SignIn />,
+    name: "Peticiones de Registro",
+    layout: "/dashboard",
+    path: "signup-requests",
+    icon: <MdPersonAdd className="h-6 w-6" />,
+    component: <SignupRequests />,
   },
   {
-    name: "RTL Admin",
-    layout: "/rtl",
-    path: "rtl",
-    icon: <MdHome className="h-6 w-6" />,
-    component: <RTLDefault />,
+    name: "Acciones Sobre Usuarios",
+    layout: "/dashboard",
+    path: "upde-users",
+    icon: <MdOutlinePersonAddDisabled className="h-6 w-6" />,
+    component: <UpDeUsers />,
   },
 ];
 export default routes;
