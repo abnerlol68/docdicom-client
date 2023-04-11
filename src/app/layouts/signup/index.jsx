@@ -1,14 +1,30 @@
 import React from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import FixedPlugin from "components/fixedPlugin/FixedPlugin";
+
+import { SignUp as SignUpView } from "app/views/signup";
 
 export default function Signup(props) {
+
   document.documentElement.dir = "ltr";
 
   return (
-    <div className="flex h-full w-full">
-      <button className="rounded-xl border-2 border-blue-500 px-5 py-3 text-base font-medium text-blue-500 transition duration-200 hover:bg-blue-600/5 active:bg-blue-700/5 dark:border-blue-400 dark:bg-blue-400/10 dark:text-white dark:hover:bg-blue-300/10 dark:active:bg-blue-200/10">
-        Sign-up
-      </button>
+    <div>
+      <div className="relative float-right h-full min-h-screen w-full !bg-white dark:!bg-navy-900">
+        <FixedPlugin />
+        <main className={`mx-auto min-h-screen`}>
+          {/* Header */}
+
+          {/* Main */}
+          <Link to="/" className="mt-0 w-max lg:pt-10">
+            Go back
+          </Link>
+          <SignUpView />
+
+          {/* Footer */}
+        </main>
+      </div>
     </div>
   );
 }
