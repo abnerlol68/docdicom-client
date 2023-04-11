@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import InputField from "components/fields/InputField";
+import Alert from "components/alerts/Alert";
 
 import { API_URL as url } from "config";
 
@@ -12,6 +13,12 @@ export function SignUp() {
     u_last_m_name: "",
     u_password: "",
     u_phone: "",
+  });
+
+  const [formAlert, setFormAlert] = useState({
+    enable: false,
+    type: "info",
+    message: "",
   });
 
   const handleSummit = async (evt) => {
@@ -28,6 +35,14 @@ export function SignUp() {
     const res = await req.json();
 
     console.log(res);
+
+    if (res.mensaje === "Usuario registrado.") {
+      setFormAlert({
+        enable: true,
+        type: "success",
+        message: "Petición de registro exitosa",
+      });
+    }
   };
 
   const handleChange = (evt) => {
@@ -45,6 +60,7 @@ export function SignUp() {
   return (
     <div className="mt-16 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
       <div className="mt-[10vh] w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
+        <Alert enable={formAlert.enable} type={formAlert.type} message={formAlert.message} />
         <form onSubmit={handleSummit}>
           <InputField
             variant="auth"
