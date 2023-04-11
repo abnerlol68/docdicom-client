@@ -8,7 +8,12 @@ import DataTables from "views/admin/tables";
 import RTLDefault from "views/rtl/default";
 
 // Auth Imports
-import SignIn from "views/auth/SignIn";
+import SignIn from "views/auth/signin";
+import SignUp from "views/auth/signup";
+
+//Error Imports
+import E404 from "views/error/404";
+import E500 from "views/error/500";
 
 // Icon Imports
 import {
@@ -17,6 +22,7 @@ import {
   MdBarChart,
   MdPerson,
   MdLock,
+  MdError
 } from "react-icons/md";
 
 const routes = [
@@ -57,11 +63,32 @@ const routes = [
     component: <SignIn />,
   },
   {
+    name: "Sign Un",
+    layout: "/auth",
+    path: "sign-up",
+    icon: <MdLock className="h-6 w-6" />,
+    component: <SignUp />,
+  },
+  {
     name: "RTL Admin",
     layout: "/rtl",
     path: "rtl",
     icon: <MdHome className="h-6 w-6" />,
     component: <RTLDefault />,
+  },
+  {
+    name: "Not Found",
+    layout: "/error",
+    path: "notFound",
+    icon: <MdError className="h-6 w-6" />,
+    component: <E404 />,
+  },
+  {
+    name: "Server Offline",
+    layout: "/error",
+    path: "serverOffline",
+    icon: <MdError className="h-6 w-6" />,
+    component: <E500 />,
   },
 ];
 export default routes;
