@@ -2,7 +2,7 @@
 
 ![version](https://img.shields.io/badge/version-1.0.2-brightgreen.svg)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
-[![GitHub issues open](https://img.shields.io/github/issues/horizon-ui/horizon-tailwind-react.svg?maxAge=2592000)](https://github.com/horizon-ui/horizon-tailwind-react/issues?q=is%3Aopen+is%3Aissue)
+
 
 
 ### 🎉 [NEW](#) Horizon UI Components
