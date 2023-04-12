@@ -6,7 +6,7 @@ export default function E500() {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 512 512"
-          className="h-40 w-full mb-8 dark:text-gray-600"
+          className="h-40 w-full mb-8 text-gray-900 dark:text-gray-600"
         >
           <path
             fill="currentColor"
@@ -29,7 +29,7 @@ export default function E500() {
           ></polygon>
         </svg>
       <p className="mb-5 text-3xl">
-        Parece que nuestros servicios no se encuentran disponibles actualmente
+        Parece que nuestros servidores no se encuentran disponibles actualmente
       </p>
     </>
   );

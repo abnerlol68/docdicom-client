@@ -34,7 +34,7 @@ export default function Error() {
                       />
                     </Routes>
                     <Link to="/admin" className="mt-0 w-max lg:pt-10">
-                      <div className="rounded bg-gray-900 px-8 py-3 text-2xl font-semibold text-white dark:bg-purple-700 dark:text-gray-100">
+                      <div className="rounded bg-gray-900 px-8 py-3 text-2xl font-semibold text-white dark:bg-blue-900 dark:text-gray-100">
                         Regresar
                       </div>
                     </Link>
