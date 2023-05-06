@@ -4,10 +4,15 @@ import "./index.css";
 
 import App from "./App";
 
+// Contexts imports
+import { UserCtxProvider } from "app/context/UserCtx";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  <UserCtxProvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </UserCtxProvider>
 );

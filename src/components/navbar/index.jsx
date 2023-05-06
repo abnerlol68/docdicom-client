@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Dropdown from "components/dropdown";
 import { FiAlignJustify } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import navbarimage from "assets/img/layout/Navbar.png";
 import { BsArrowBarUp } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
@@ -12,9 +12,23 @@ import {
 } from "react-icons/io";
 import avatar from "assets/img/avatars/avatar4.png";
 
+import { UserCtx } from "app/context/UserCtx";
+
 const Navbar = (props) => {
   const { onOpenSidenav, brandText } = props;
   const [darkmode, setDarkmode] = React.useState(false);
+
+  const navigate = useNavigate();
+  const { isLogged, setIsLogged } = useContext(UserCtx);
+
+  useEffect(() => {
+    navigate("/");
+  }, [isLogged]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setIsLogged(false);
+  };
 
   return (
     <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
@@ -209,8 +223,9 @@ const Navbar = (props) => {
                   Newsletter Settings
                 </a>
                 <a
-                  href=" "
+                  href="/"
                   className="mt-3 text-sm font-medium text-red-500 hover:text-red-500"
+                  onClick={handleLogout}
                 >
                   Log Out
                 </a>

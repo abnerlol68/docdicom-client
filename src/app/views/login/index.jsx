@@ -1,26 +1,35 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import InputField from "components/fields/InputField";
+import { UserCtx } from "app/context/UserCtx";
 
 import { API_URL as url } from "config";
 
 export function Login(props) {
-  const [values, setValues] = useState({
+  const navigate = useNavigate();
+
+  const { isLogged, setIsLogged } = useContext(UserCtx);
+
+  const [credentials, setCredentials] = useState({
     u_email: "",
     u_password: "",
   });
+
+  useEffect(() => {
+    if (isLogged) navigate("/");
+  }, [isLogged]);
 
   const handleChange = (evt) => {
     const { target } = evt;
     const { name, value } = target;
 
-    const newValues = {
-      ...values,
+    const newCredential = {
+      ...credentials,
       [name]: value,
     };
 
-    setValues(newValues);
+    setCredentials(newCredential);
   };
 
   const handleSummit = async (evt) => {
@@ -31,16 +40,20 @@ export function Login(props) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(values),
+      body: JSON.stringify(credentials),
     });
 
     const res = await req.json();
+    const userRes = res.usuario;
 
-    console.log(res);
+    if (userRes) {
+      localStorage.setItem("user", JSON.stringify(userRes));
+      setIsLogged(true);
+    }
   };
 
   return (
-    <div className="mt-16 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
+    <div className="mt-16 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-center">
       {/* Sign in section */}
       <div className="mt-[10vh] w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
         <form onSubmit={handleSummit}>
@@ -59,7 +72,7 @@ export function Login(props) {
             id="u_email"
             name="u_email"
             type="email"
-            val={values.u_email}
+            val={credentials.u_email}
             change={handleChange}
           />
           <InputField
@@ -70,7 +83,7 @@ export function Login(props) {
             id="u_password"
             name="u_password"
             type="password"
-            val={values.u_password}
+            val={credentials.u_password}
             change={handleChange}
           />
           <button
