@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
+import ProtectRoute from "components/ProtectRoute";
 import routes from "routes.js";
+
+import { UserCtx } from "app/context/UserCtx";
 
 export default function Dashboard(props) {
   const { ...rest } = props;
   const location = useLocation();
   const [open, setOpen] = React.useState(true);
   const [currentRoute, setCurrentRoute] = React.useState("Home Dashboard");
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const { isLogged } = useContext(UserCtx);
 
   React.useEffect(() => {
     window.addEventListener("resize", () =>
@@ -48,7 +55,13 @@ export default function Dashboard(props) {
   };
 
   const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
+    const filteredRoutes = routes.filter((rote) =>
+      rote.access.includes(user.id_role)
+    );
+
+    console.log(filteredRoutes);
+
+    return filteredRoutes.map((prop, key) => {
       if (prop.layout === "/dashboard") {
         return (
           <Route path={`/${prop.path}`} element={prop.component} key={key} />
@@ -81,7 +94,13 @@ export default function Dashboard(props) {
             />
             <div className="pt-5s mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
               <Routes>
-                {getRoutes(routes)}
+                <Route
+                  element={
+                    <ProtectRoute isAllowed={!isLogged} redirectTo="/" />
+                  }
+                >
+                  {getRoutes(routes)}
+                </Route>
 
                 <Route
                   path="/"

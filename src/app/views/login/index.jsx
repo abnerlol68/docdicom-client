@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 
 import InputField from "components/fields/InputField";
 import { UserCtx } from "app/context/UserCtx";
@@ -7,18 +7,12 @@ import { UserCtx } from "app/context/UserCtx";
 import { API_URL as url } from "config";
 
 export function Login(props) {
-  const navigate = useNavigate();
-
-  const { isLogged, setIsLogged } = useContext(UserCtx);
+  const { setIsLogged } = useContext(UserCtx);
 
   const [credentials, setCredentials] = useState({
     u_email: "",
     u_password: "",
   });
-
-  useEffect(() => {
-    if (isLogged) navigate("/");
-  }, [isLogged]);
 
   const handleChange = (evt) => {
     const { target } = evt;
