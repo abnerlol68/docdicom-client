@@ -59,8 +59,6 @@ export default function Dashboard(props) {
       rote.access.includes(user.id_role)
     );
 
-    console.log(filteredRoutes);
-
     return filteredRoutes.map((prop, key) => {
       if (prop.layout === "/dashboard") {
         return (
