@@ -9,6 +9,7 @@ export default function Home(props) {
   const [medicalStudies, setMedicalStudies] = useState({});
   const [msImgDicomReq, setMsImgDicomReq] = useState("");
   const [imgDicoms, setImgDicoms] = useState(null);
+  const [catGetImages, setCatGetImages] = useState("disabled");
 
   useEffect(() => {
     const getMedicalStudies = async () => {
@@ -16,8 +17,7 @@ export default function Home(props) {
       const res = await req.json();
       const serialAndDate = {};
       res["Estudios"].forEach(
-        (ms) =>
-          (serialAndDate[ms.ma_mi_id] = `${ms.ma_date_study} - ${ms.ma_mi_id}`)
+        (ms) => (serialAndDate[ms.ma_id] = `${ms.ma_date_study} - ${ms.ma_id}`)
       );
       setMedicalStudies(serialAndDate);
     };
@@ -28,6 +28,7 @@ export default function Home(props) {
     const { target } = evt;
     const { value } = target;
     setMsImgDicomReq(value);
+    setCatGetImages("");
   };
 
   const handleSummit = async (evt) => {
@@ -39,8 +40,8 @@ export default function Home(props) {
 
   return (
     <div className="flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:items-center lg:justify-start">
-      <div className="mt-5 w-full grid grid-cols-1 grid-rows-3 md:pl-4 lg:pl-0">
-        <form className="flex items-center row-span-1" onSubmit={handleSummit}>
+      <div className="mt-5 grid w-full grid-cols-1 grid-rows-3 md:pl-4 lg:pl-0">
+        <form className="row-span-1 flex items-center" onSubmit={handleSummit}>
           <SelectField
             id="appointment_id"
             label="Selecciona un estudio"
@@ -55,18 +56,23 @@ export default function Home(props) {
           <button
             type="submit"
             id="btnSummit"
-            className="relative top-2 ml-12 h-14 rounded-xl bg-brand-500 px-5 py-3 text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white  dark:hover:bg-brand-300 dark:active:bg-brand-200"
+            className={`relative top-2 ml-12 h-14 ${
+              catGetImages === ""
+                ? "rounded-xl bg-brand-500 px-5 py-3 text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white  dark:hover:bg-brand-300 dark:active:bg-brand-200"
+                : "rounded-xl bg-gray-100 px-5 py-3 text-base font-medium text-navy-700 transition duration-200 hover:bg-gray-200 active:bg-gray-300 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:active:bg-white/30"
+            }`}
+            disabled={catGetImages}
           >
             Solicitar
           </button>
         </form>
         {!imgDicoms ? (
-          <div className="flex flex-col items-center min-h-max row-span-2 py-16">
-            <FcRemoveImage className="w-28 h-28" />
+          <div className="row-span-2 flex min-h-max flex-col items-center py-16">
+            <FcRemoveImage className="h-28 w-28" />
             <span>Sin imágenes asociadas</span>
           </div>
         ) : (
-          <div className="grid grid-cols-1 place-items-center gap-4 row-span-2 sm:grid-cols-2 md:grid-cols-4">
+          <div className="row-span-2 grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 md:grid-cols-4">
             {imgDicoms.map((img) => {
               return (
                 <img
