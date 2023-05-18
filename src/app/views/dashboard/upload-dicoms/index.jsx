@@ -5,6 +5,7 @@ import SelectField from "components/fields/SelectField";
 import { API_URL as url } from "config";
 
 export default function UploadDicoms(props) {
+  // const [fileTest, setFileTest] = useState();
   const [institutes, setInstitutes] = useState({});
   const [categories, setCategories] = useState({});
   const [medicalStudyFields, setMedicalStudyFields] = useState({
@@ -50,36 +51,43 @@ export default function UploadDicoms(props) {
   const handleSummit = async (evt) => {
     evt.preventDefault();
 
-    const dataMedicalStudy = new FormData();
-    dataMedicalStudy.append("ms_date_study", medicalStudyFields.ms_date_study);
-    dataMedicalStudy.append(
-      "ms_description",
-      medicalStudyFields.ms_description
+    const medicalStudyWithoutDicoms = JSON.parse(
+      JSON.stringify(medicalStudyFields)
     );
-    dataMedicalStudy.append("ms_mi_id", medicalStudyFields.ms_mi_id);
-    dataMedicalStudy.append("ms_cs_id", medicalStudyFields.ms_cs_id);
-    dataMedicalStudy.append(
-      "u_id",
-      JSON.parse(localStorage.getItem("user")).id_user
-    );
-    const files = medicalStudyFields.dicoms
-      ? [...medicalStudyFields.dicoms]
-      : [];
-    files.forEach((file) => {
-      dataMedicalStudy.append("dicoms", file);
+    delete medicalStudyWithoutDicoms.dicoms;
+    const { dicoms } = medicalStudyFields;
+
+    console.log({ "With dicoms": medicalStudyFields });
+    console.log({ "Without dicoms": medicalStudyWithoutDicoms });
+    console.log({ "Dicoms to upload": dicoms });
+
+    const reqWithoutDicoms = await fetch(`${url}api/register/medical_study`, {
+      // const reqWithoutDicoms = await fetch(`http://127.0.0.1:5050/api/dicom`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(medicalStudyWithoutDicoms),
     });
 
-    // const req = await fetch(`${url}api/register/medic_study`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type":
-    //       "multipart/form-data; boundary=---011000010111000001101001",
-    //   },
-    //   body: dataMedicalStudy,
-    // });
+    const resWithDicoms = await reqWithoutDicoms.json();
+    console.log(resWithDicoms);
+    const { medical_study_id } = resWithDicoms;
 
-    // const res = await req.json();
-    console.log(dataMedicalStudy);
+    [...dicoms].forEach(async (dicom) => {
+      const dicomUp = new FormData();
+      dicomUp.append("dicom", dicom, dicom.name);
+      console.log({ "dicom to Upload": dicomUp });
+      const reqUploadDicoms = await fetch(
+        `${url}api/register/medical_study_dicom/${medical_study_id}`,
+        {
+          method: "POST",
+          body: dicomUp,
+        }
+      );
+      const resUploadDicoms = await reqUploadDicoms.json();
+      console.log(resUploadDicoms);
+    });
   };
 
   return (
@@ -108,7 +116,6 @@ export default function UploadDicoms(props) {
             extra="mb-3"
             variant="auth"
             name="ms_mi_id"
-            val={medicalStudyFields.ms_mi_id}
             change={handleMedicalStudyFields}
             options={institutes}
           />
@@ -118,7 +125,6 @@ export default function UploadDicoms(props) {
             extra="mb-3"
             variant="auth"
             name="ms_cs_id"
-            val={medicalStudyFields.ms_cs_id}
             change={handleMedicalStudyFields}
             options={categories}
           />
