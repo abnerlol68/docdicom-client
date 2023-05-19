@@ -58,7 +58,7 @@ export function SignUp() {
   };
 
   return (
-    <div className="mt-16 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
+    <div className="mt-16 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-center">
       <div className="mt-[10vh] w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
         <Alert enable={formAlert.enable} type={formAlert.type} message={formAlert.message} />
         <form onSubmit={handleSummit}>
