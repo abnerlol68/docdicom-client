@@ -84,128 +84,129 @@ export default function CreateUsers(props) {
 
   return (
     <div className="mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
-      <div className="mt-[10vh] w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
+      <div className="mt-3 w-full max-w-full flex-col items-center md:pl-4 lg:pl-0">
         <Alert
           enable={formAlert.enable}
           type={formAlert.type}
           message={formAlert.message}
         />
-        <SelectField
-          id="type_user"
-          label="Tipo de usuario"
-          extra="mb-3"
-          variant="auth"
-          name="type_user"
-          val={typeUser}
-          change={handleTypeUser}
-          options={{
-            10000002: "Paciente",
-            10000001: "Médico",
-            10000000: "Adiministrador",
-          }}
-        />
-        <form onSubmit={handleSummit}>
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="Nombre"
-            placeholder="Nombre"
-            id="u_name"
-            name="u_name"
-            type="text"
-            val={valuesForm.u_name}
-            change={handleChange}
-          />
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="Primer Apellido"
-            placeholder="Primer Apellido"
-            id="u_last_name"
-            name="u_last_name"
-            type="text"
-            val={valuesForm.u_last_name}
-            change={handleChange}
-          />
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="Segundo Apellido"
-            placeholder="Segundo Apellido"
-            id="u_last_m_name"
-            name="u_last_m_name"
-            type="text"
-            val={valuesForm.u_last_m_name}
-            change={handleChange}
-          />
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="Correo Electronico"
-            placeholder="mail@simmmple.com"
-            id="u_email"
-            name="u_email"
-            type="email"
-            val={valuesForm.u_email}
-            change={handleChange}
-          />
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="Contraseña"
-            placeholder="zom3P455"
-            id="u_password"
-            name="u_password"
-            type="password"
-            val={valuesForm.u_password}
-            change={handleChange}
-          />
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="Telefono"
-            placeholder="7749087645"
-            id="u_phone"
-            name="u_phone"
-            type="tel"
-            val={valuesForm.u_phone}
-            change={handleChange}
-          />
-          <SelectField
-            id="u_status_p"
-            label="Estado"
-            extra="mb-3"
-            variant="auth"
-            name="u_status_p"
-            val={valuesForm.u_status_p}
-            change={handleChange}
-            options={{ A: "Activo", D: "Inactivo" }}
-          />
-          {/* Conditional render for user specialty */}
-          {typeUser !== "10000002" && (
+        <form onSubmit={handleSummit} className="flex flex-col p-4 rounded-lg bg-white dark:bg-navy-700 dark:text-white">
+          <div className="grid lg:grid-cols-2 lg:gap-4 pb-3">
             <SelectField
-              id="u_s_id"
-              label="Especialidad"
+              id="type_user"
+              label="Tipo de usuario"
               extra="mb-3"
               variant="auth"
-              name="u_s_id"
-              val={valuesForm.u_s_id}
-              change={handleChange}
+              name="type_user"
+              val={typeUser}
+              change={handleTypeUser}
               options={{
-                10000000: "Cardiología Clínica",
-                10000001: "Cirugía Pediátrica",
-                10000002: "Cirugía General",
-                10000003: "Gastroenterología",
-                10000004: "Hematología",
-                10000005: "Neumología",
-                10000006: "Ortopedia",
-                10000007: "Otorrinolaringología",
-                10000008: "Radiología e Imagen",
-                10000009: "Cirugía Oncológica",
+                10000002: "Paciente",
+                10000001: "Médico",
+                10000000: "Adiministrador",
               }}
             />
-          )}
-
+            <InputField
+              variant="auth"
+              extra="mb-3"
+              label="Nombre"
+              placeholder="Nombre"
+              id="u_name"
+              name="u_name"
+              type="text"
+              val={valuesForm.u_name}
+              change={handleChange}
+            />
+            <InputField
+              variant="auth"
+              extra="mb-3"
+              label="Primer Apellido"
+              placeholder="Primer Apellido"
+              id="u_last_name"
+              name="u_last_name"
+              type="text"
+              val={valuesForm.u_last_name}
+              change={handleChange}
+            />
+            <InputField
+              variant="auth"
+              extra="mb-3"
+              label="Segundo Apellido"
+              placeholder="Segundo Apellido"
+              id="u_last_m_name"
+              name="u_last_m_name"
+              type="text"
+              val={valuesForm.u_last_m_name}
+              change={handleChange}
+            />
+            <InputField
+              variant="auth"
+              extra="mb-3"
+              label="Correo Electronico"
+              placeholder="mail@simmmple.com"
+              id="u_email"
+              name="u_email"
+              type="email"
+              val={valuesForm.u_email}
+              change={handleChange}
+            />
+            <InputField
+              variant="auth"
+              extra="mb-3"
+              label="Contraseña"
+              placeholder="zom3P455"
+              id="u_password"
+              name="u_password"
+              type="password"
+              val={valuesForm.u_password}
+              change={handleChange}
+            />
+            <InputField
+              variant="auth"
+              extra="mb-3"
+              label="Telefono"
+              placeholder="7749087645"
+              id="u_phone"
+              name="u_phone"
+              type="tel"
+              val={valuesForm.u_phone}
+              change={handleChange}
+            />
+            <SelectField
+              id="u_status_p"
+              label="Estado"
+              extra="mb-3"
+              variant="auth"
+              name="u_status_p"
+              val={valuesForm.u_status_p}
+              change={handleChange}
+              options={{ A: "Activo", D: "Inactivo" }}
+            />
+            {/* Conditional render for user specialty */}
+            {typeUser !== "10000002" && (
+              <SelectField
+                id="u_s_id"
+                label="Especialidad"
+                extra="mb-3"
+                variant="auth"
+                name="u_s_id"
+                val={valuesForm.u_s_id}
+                change={handleChange}
+                options={{
+                  10000000: "Cardiología Clínica",
+                  10000001: "Cirugía Pediátrica",
+                  10000002: "Cirugía General",
+                  10000003: "Gastroenterología",
+                  10000004: "Hematología",
+                  10000005: "Neumología",
+                  10000006: "Ortopedia",
+                  10000007: "Otorrinolaringología",
+                  10000008: "Radiología e Imagen",
+                  10000009: "Cirugía Oncológica",
+                }}
+              />
+            )}
+          </div>
           {/* Button Submit */}
           <button
             type="submit"

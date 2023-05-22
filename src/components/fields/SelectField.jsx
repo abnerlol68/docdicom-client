@@ -14,7 +14,7 @@ export default function SelectField({
     <div className={`${extra}`}>
       <label
         htmlFor={id}
-        className={`text-sm text-navy-700 dark:text-white ${
+        className={`text-base text-navy-700 dark:text-white ${
           variant === "auth" ? "ml-1.5 font-medium" : "ml-3 font-bold"
         } ${extraLabel}`}
       >
@@ -22,7 +22,7 @@ export default function SelectField({
       </label>
       <br />
       <select
-        className={`select select-bordered w-full max-w-xs rounded-xl border bg-white/0 p-3 outline-none dark:bg-navy-900 ${extraSelect}`}
+        className={`select text-base select-bordered w-full max-w-xs rounded-xl border bg-white/0 p-3 outline-none dark:bg-navy-900 focus:border-indigo-500 ${extraSelect}`}
         value={val}
         onChange={change}
         name={name}
