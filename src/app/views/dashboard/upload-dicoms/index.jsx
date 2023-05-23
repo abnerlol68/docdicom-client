@@ -5,7 +5,6 @@ import SelectField from "components/fields/SelectField";
 import { API_URL as url } from "config";
 
 export default function UploadDicoms(props) {
-  // const [fileTest, setFileTest] = useState();
   const [institutes, setInstitutes] = useState({});
   const [categories, setCategories] = useState({});
   const [medicalStudyFields, setMedicalStudyFields] = useState({
@@ -57,12 +56,7 @@ export default function UploadDicoms(props) {
     delete medicalStudyWithoutDicoms.dicoms;
     const { dicoms } = medicalStudyFields;
 
-    console.log({ "With dicoms": medicalStudyFields });
-    console.log({ "Without dicoms": medicalStudyWithoutDicoms });
-    console.log({ "Dicoms to upload": dicoms });
-
     const reqWithoutDicoms = await fetch(`${url}api/register/medical_study`, {
-      // const reqWithoutDicoms = await fetch(`http://127.0.0.1:5050/api/dicom`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -71,13 +65,12 @@ export default function UploadDicoms(props) {
     });
 
     const resWithDicoms = await reqWithoutDicoms.json();
-    console.log(resWithDicoms);
     const { medical_study_id } = resWithDicoms;
 
     [...dicoms].forEach(async (dicom) => {
       const dicomUp = new FormData();
       dicomUp.append("dicom", dicom, dicom.name);
-      console.log({ "dicom to Upload": dicomUp });
+
       const reqUploadDicoms = await fetch(
         `${url}api/register/medical_study_dicom/${medical_study_id}`,
         {
@@ -86,82 +79,91 @@ export default function UploadDicoms(props) {
         }
       );
       const resUploadDicoms = await reqUploadDicoms.json();
-      console.log(resUploadDicoms);
     });
   };
 
   return (
     <div className="mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
-      <div className="mt-6 w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
-        <form onSubmit={handleSummit}>
-          <div className="mb-3 flex flex-col">
-            <label
-              htmlFor="ms_date_study"
-              className={`ml-1.5 text-2xl font-medium text-navy-700 dark:text-white`}
-            >
-              Fecha de cita medica
-            </label>
-            <input
-              id="ms_date_study"
-              name="ms_date_study"
-              type="date"
-              value={medicalStudyFields.ms_date_study}
-              onChange={handleMedicalStudyFields}
-              className="file-input file-input-bordered file-input-primary w-full max-w-xs bg-white/0 p-3 pl-2 outline-none dark:bg-navy-900"
-            />
-          </div>
-          <SelectField
-            id="ms_mi_id"
-            label="Selecciona un instituto"
-            extra="mb-3"
-            variant="auth"
-            name="ms_mi_id"
-            change={handleMedicalStudyFields}
-            options={institutes}
-          />
-          <SelectField
-            id="ms_cs_id"
-            label="Selecciona un categoria"
-            extra="mb-3"
-            variant="auth"
-            name="ms_cs_id"
-            change={handleMedicalStudyFields}
-            options={categories}
-          />
-          <div>
-            <label
-              htmlFor="ms_description"
-              className={`ml-1.5 text-2xl font-medium text-navy-700 dark:text-white`}
-            >
-              Descripción de la cita médica
-            </label>
-            <textarea
-              id="ms_description"
-              name="ms_description"
-              cols="30"
-              rows="10"
-              value={medicalStudyFields.ms_description}
-              onChange={handleMedicalStudyFields}
-              className="mt-2 flex w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm text-gray-800 outline-none"
-            ></textarea>
-          </div>
-          <div className="mb-3">
-            <label
-              htmlFor="dicoms"
-              className={`ml-1.5 text-2xl font-medium text-navy-700 dark:text-white`}
-            >
-              Selecciona un archivo dicom
-            </label>
-            <input
-              id="dicoms"
-              name="dicoms"
-              type="file"
-              className="file-input file-input-bordered file-input-primary w-full max-w-xs"
-              onChange={handleMedicalStudyFields}
-              multiple
-            />
+      <div className="mt-6 w-full max-w-full flex-col items-center md:pl-4 lg:pl-0">
+        <form onSubmit={handleSummit} className="flex flex-col rounded-2xl bg-white p-4 dark:bg-navy-700 dark:text-white">
+          <div className="grid grid-cols-2 gap-2 pb-3">
+            <div className="inline-flex flex-col">
+              {/* Input */}
+              <div className="mb-3 flex flex-col">
+                <label
+                  htmlFor="ms_date_study"
+                  className={`ml-1.5 text-base font-medium text-navy-700 dark:text-white`}
+                >
+                  Fecha de cita medica
+                </label>
+                <input
+                  id="ms_date_study"
+                  name="ms_date_study"
+                  type="date"
+                  value={medicalStudyFields.ms_date_study}
+                  onChange={handleMedicalStudyFields}
+                  className="file-input file-input-bordered file-input-primary w-full max-w-xs bg-white/0 p-3 pl-2 outline-none dark:bg-navy-900"
+                />
+              </div>
+              {/* Input */}
+              <SelectField
+                id="ms_mi_id"
+                label="Selecciona un instituto"
+                extra="mb-3"
+                variant="auth"
+                name="ms_mi_id"
+                change={handleMedicalStudyFields}
+                options={institutes}
+              />
+              {/* Input */}
+              <SelectField
+                id="ms_cs_id"
+                label="Selecciona un categoria"
+                extra="mb-3"
+                variant="auth"
+                name="ms_cs_id"
+                change={handleMedicalStudyFields}
+                options={categories}
+              />
+              {/* Input */}
+              <div className="mb-3 flex flex-col">
+                <label
+                  htmlFor="dicoms"
+                  className={`ml-1.5 text-base font-medium text-navy-700 dark:text-white`}
+                >
+                  Selecciona un archivo dicom
+                </label>
+                <input
+                  id="dicoms"
+                  name="dicoms"
+                  type="file"
+                  className="file-input file-input-bordered file-input-primary w-full max-w-xs"
+                  onChange={handleMedicalStudyFields}
+                  multiple
+                />
+              </div>
+            </div>
+            {/* Input */}
+            <div>
+              <label
+                htmlFor="ms_description"
+                className={`ml-1.5 text-base font-medium text-navy-700 dark:text-white`}
+              >
+                Descripción de la cita médica
+              </label>
+              <textarea
+                id="ms_description"
+                name="ms_description"
+                cols="30"
+                rows="10"
+                value={medicalStudyFields.ms_description}
+                onChange={handleMedicalStudyFields}
+                className="mt-2 flex w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm text-gray-800 outline-none dark:text-white"
+              ></textarea>
+            </div>
           </div>
 
+          {/* Submit button */}
           <button
             type="submit"
             id="btnSummit"
