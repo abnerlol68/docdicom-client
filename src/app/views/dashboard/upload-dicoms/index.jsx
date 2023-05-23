@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import SelectField from "components/fields/SelectField";
+import Alert from "components/alerts/Alert";
 
 import { API_URL as url } from "config";
 
@@ -14,6 +15,12 @@ export default function UploadDicoms(props) {
     ms_description: "",
     dicoms: [],
   });
+  const [formAlert, setFormAlert] = useState({
+    enable: false,
+    type: "info",
+    message: "",
+  });
+  const [successDicoms, setSuccessDicoms] = useState(0);
 
   useEffect(() => {
     const getMedicalDate = async () => {
@@ -49,6 +56,7 @@ export default function UploadDicoms(props) {
 
   const handleSummit = async (evt) => {
     evt.preventDefault();
+    setSuccessDicoms(0);
 
     const medicalStudyWithoutDicoms = JSON.parse(
       JSON.stringify(medicalStudyFields)
@@ -71,21 +79,63 @@ export default function UploadDicoms(props) {
       const dicomUp = new FormData();
       dicomUp.append("dicom", dicom, dicom.name);
 
-      const reqUploadDicoms = await fetch(
-        `${url}api/register/medical_study_dicom/${medical_study_id}`,
-        {
-          method: "POST",
-          body: dicomUp,
+      let resUploadDicoms = null;
+
+      try {
+        const reqUploadDicoms = await fetch(
+          `${url}api/register/medical_study_dicom/${medical_study_id}`,
+          {
+            method: "POST",
+            body: dicomUp,
+          }
+        );
+        resUploadDicoms = await reqUploadDicoms.json();
+        if (resWithDicoms !== null) {
+          setSuccessDicoms(successDicoms + 1);
         }
-      );
-      const resUploadDicoms = await reqUploadDicoms.json();
+      } catch (err) {
+        console.error(err);
+      }
     });
+
+    if (!successDicoms) {
+      setFormAlert({
+        enable: true,
+        type: "error",
+        message: `Petició de registro fallida`,
+      });
+      return;
+    }
+    if (successDicoms < medicalStudyFields.dicoms.length) {
+      setFormAlert({
+        enable: true,
+        type: "warning",
+        message: `Peticiones de registro exitosas ${successDicoms} de ${medicalStudyFields.dicoms.length}`,
+      });
+      return;
+    }
+    if (successDicoms === medicalStudyFields.dicoms.length) {
+      setFormAlert({
+        enable: true,
+        type: "success",
+        message: "Petición de registro exitosa",
+      });
+      return;
+    }
   };
 
   return (
     <div className="mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
       <div className="mt-6 w-full max-w-full flex-col items-center md:pl-4 lg:pl-0">
-        <form onSubmit={handleSummit} className="flex flex-col rounded-2xl bg-white p-4 dark:bg-navy-700 dark:text-white">
+        <Alert
+          enable={formAlert.enable}
+          type={formAlert.type}
+          message={formAlert.message}
+        />
+        <form
+          onSubmit={handleSummit}
+          className="flex flex-col rounded-2xl bg-white p-4 dark:bg-navy-700 dark:text-white"
+        >
           <div className="grid grid-cols-2 gap-2 pb-3">
             <div className="inline-flex flex-col">
               {/* Input */}
