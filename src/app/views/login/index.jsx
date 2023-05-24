@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 import InputField from "components/fields/InputField";
+import Alert from "components/alerts/Alert";
 import { UserCtx } from "app/context/UserCtx";
 
 import { API_URL as url } from "config";
@@ -12,6 +13,12 @@ export function Login(props) {
   const [credentials, setCredentials] = useState({
     u_email: "",
     u_password: "",
+  });
+
+  const [formAlert, setFormAlert] = useState({
+    enable: false,
+    type: "info",
+    message: "",
   });
 
   const handleChange = (evt) => {
@@ -27,6 +34,7 @@ export function Login(props) {
   };
 
   const handleSummit = async (evt) => {
+    console.log(evt);
     evt.preventDefault();
 
     const req = await fetch(`${url}api/validate/user`, {
@@ -40,6 +48,14 @@ export function Login(props) {
     const res = await req.json();
     const userRes = res.usuario;
 
+    if (res.mensaje === "El usuario no existe.") {
+      setFormAlert({
+        enable: true,
+        type: "error",
+        message: "Credenciales invalidas",
+      });
+    }
+
     if (userRes) {
       localStorage.setItem("user", JSON.stringify(userRes));
       setIsLogged(true);
@@ -50,6 +66,11 @@ export function Login(props) {
     <div className="mt-16 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-center">
       {/* Sign in section */}
       <div className="mt-[10vh] w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
+        <Alert
+          enable={formAlert.enable}
+          type={formAlert.type}
+          message={formAlert.message}
+        />
         <form onSubmit={handleSummit}>
           <h4 className="mb-2.5 text-4xl font-bold text-navy-700 dark:text-white">
             Login
